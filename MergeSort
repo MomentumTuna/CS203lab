@@ -28,5 +28,4 @@ public static void mergesort(int[] array1,int[] array2,int l,int r){
     }
     }
         
-    
-    }
+
