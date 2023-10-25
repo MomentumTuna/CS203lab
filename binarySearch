@@ -1,0 +1,22 @@
+public int search3(int[] nums,int target) {
+		int left = 0;
+		int right = nums.length;  //初始条件
+		while(left < right) {
+			int mid = left +(right-left)/2;
+			if(nums[mid] == target) {
+				return mid;
+			}else if(nums[mid] < target) {
+				left  = mid + 1;  //向右查找
+			}else {
+				right  = mid;  //向左查找
+			}
+		}
+		
+		if(left != nums.length && nums[left] == target) {
+			return left;
+		}
+		return -1;
+	}
+————————————————
+版权声明：本文为CSDN博主「Xixw」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weixin_43156699/article/details/118577787
