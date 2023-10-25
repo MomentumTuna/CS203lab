@@ -1,27 +1,4 @@
-import java.util.Scanner;
-
-public class App {
-    public static void main(String[] args) throws Exception {
-        Scanner input=new Scanner(System.in);
-        int length=input.nextInt();
-        String[] line=new String[length];
-        for (int i = 0; i < line.length; i++) {
-            line[i]=input.next();
-        }
-        stack a=new stack(10);
-        stack b=new stack(line,11);
-        stack c=new stack(line,length-1);
-        b.push("x");
-        for (int i = 0; i < 20; i++) {
-            b.push("x");
-        }
-        for (int i = 0; i < 20; i++) {
-            b.pop();
-        }
-    }
-
-    
-    public static class stack{
+public static class stack{
         String[] S;
         int top=-1;
         int size;
@@ -58,5 +35,9 @@ public class App {
                 top--;
             }
         }
+
+        public String getTop(){
+            return this.S[this.top];
+        }
+
     }
-}
