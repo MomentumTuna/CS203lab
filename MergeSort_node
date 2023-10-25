@@ -1,0 +1,29 @@
+public static void mergesort(node[] array1,node[] array2,int l,int r){
+        if(r-l>1){
+        int mid=(l+r)/2;
+        mergesort(array1,array2,l,mid);
+        mergesort(array1,array2,mid+1,r);}
+        merge(array1,array2,l,r);
+    }
+        
+
+ public static void merge(node[] array1,node[] array2,int l, int r){
+    int mid=((l+r)/2); 
+    int i=0; int j=0; int q=0;
+    while(i<mid-l+1&&j<r-mid){
+        if(array1[l+i].id>array1[mid+1+j].id){
+            array2[l+q]=array1[mid+1+j];j++;q++;
+        }else{
+            array2[l+q]=array1[l+i];i++;q++;
+        }
+    }
+    while(i<mid-l+1&&j>=r-mid){
+        array2[l+q]=array1[l+i];i++;q++;
+    }
+    while(i>=mid-l+1&&j<r-mid){
+        array2[l+q]=array1[mid+1+j];j++;q++;
+    }
+    for (int k = 0; k < r-l+1; k++) {
+        array1[l+k]=array2[l+k];
+    }
+    }
