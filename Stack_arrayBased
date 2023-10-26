@@ -40,4 +40,7 @@ public static class stack{
             return this.S[this.top];
         }
 
+        public boolean isEmpty(){
+            if(this.top==-1){return true;}else{return false;}
+        }
     }
