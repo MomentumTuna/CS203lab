@@ -1,0 +1,54 @@
+   public static class stack{
+        node head=new node(-1);
+        node top=head;
+    
+
+        public stack(){
+            
+        }
+
+        
+
+        public void push(int s){
+            node temp=new node(s);
+            top.next=temp;
+            temp.pre=top;
+            top=top.next;
+        }
+
+        public void pop(){
+            top=top.pre;
+        }
+
+        public int getTop(){
+            return top.value;
+        }
+
+        public boolean isEmpty(){
+            if(top.pre==null){return true;}else{return false;}
+        }
+
+        public void delete(int s){
+            node iter=top;
+            while(iter.pre!=null){
+            while(iter.value!=s&&iter.pre!=null){
+                iter=iter.pre;
+            }
+            if(iter.value!=-1){
+                if(iter.equals(top)){top=top.pre;}
+                iter.pre.next=iter.next;
+                iter.next.pre=iter.pre;
+                iter=iter.pre;
+            }}
+        }
+    }
+
+    public static class node{
+        int value;
+        node next;
+        node pre;
+        
+        public node(int value){
+            this.value=value;
+        }
+    }
