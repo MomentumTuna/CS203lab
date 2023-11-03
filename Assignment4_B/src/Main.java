@@ -7,193 +7,130 @@ public class Main {
         int groupnum=input.nextInt();
         int length1=input.nextInt();
         int length2=input.nextInt();
-
-        stack line1=new stack();
-        stack line2=new stack();
-        int[] line1Reverse=new int[length1];
-        int[] line2Reverse=new int[length2];
-        for (int i = 0; i < line1Reverse.length; i++) {
-            line1Reverse[i]=input.nextInt();
-        }
-        for (int i = 0; i < line2Reverse.length; i++) {
-            line2Reverse[i]=input.nextInt();
-        }
-        for (int i = 0; i < length1; i++) {
-            line1.push(line1Reverse[length1-1-i]);
-        }
-        for (int i = 0; i < length2; i++) {
-            line2.push(line2Reverse[length2-1-i]);
-        }
-
+        queue line1=new queue(length1);
+        queue line2=new queue(length2);
+        boolean[] group=new boolean[groupnum];
         int[] answer=new int[groupnum];
-        node headDelete=new node(-1);
         
-        node tail=new node(-1);
-        headDelete.next=tail;
-        tail.pre=headDelete;
-        node iter1=tail;
+        for (int i = 0; i < length1; i++) {
+            line1.enQueue(input.nextInt());
+        }
+       
+        for ( int i = 0; i < length2; i++) {
+            line2.enQueue(input.nextInt());
+        }
+        
         int time=1;
         while(!line1.isEmpty()&&!line2.isEmpty()){
-            iter1=headDelete;
-            while(iter1.next!=null){
-                if(iter1.value==line1.getTop()){
-                    line1.pop();
-                    iter1.pre.next=iter1.next;
-                    iter1.next.pre=iter1.pre;
-                    
-                }
-                if(iter1.value==line2.getTop()){
-                    line2.pop();
-                    iter1.pre.next=iter1.next;
-                    iter1.next.pre=iter1.pre;
-                    
-                }
-                iter1=iter1.next;
+            while(group[line1.getFront()-1]){
+                line1.deQueue();
+                if(line1.isEmpty()){break;}
             }
-            iter1=iter1.pre;
+            while(group[line2.getFront()-1]){
+                line2.deQueue();
+                if(line2.isEmpty()){break;}
+            }
+
             if(line1.isEmpty()||line2.isEmpty()){break;}
-            
-            if(line1.getTop()==line2.getTop()){
-                answer[line1.getTop()-1]=time;
-                node temp=new node(line1.getTop());
-                temp.next=iter1.next;
-                iter1.next.pre=temp;
-                iter1.next=temp;
-                temp.pre=iter1;
-                iter1=iter1.next;
-                line1.pop(); line2.pop();
-            }else{
-                answer[line1.getTop()-1]=time;
-                node temp1=new node(line1.getTop());
-                temp1.next=iter1.next;
-                iter1.next.pre=temp1;
-                iter1.next=temp1;
-                temp1.pre=iter1;
-                iter1=iter1.next;
-                line1.pop();
-                
-                answer[line2.getTop()-1]=time;
-                node temp2=new node(line2.getTop());
-                temp2.next=iter1.next;
-                iter1.next.pre=temp2;
-                temp2.pre=iter1;
-                iter1.next=temp2;
-                iter1=iter1.next;
-                line2.pop();
-            }
+            answer[line1.getFront()-1]=time;
+            group[line1.getFront()-1]=true;
+            line1.deQueue();
+            answer[line2.getFront()-1]=time;
+            group[line2.getFront()-1]=true;
+            line2.deQueue();
             time++;
-
         }
-
+        
         while(!line1.isEmpty()){
-            iter1=headDelete.next;
-            while(iter1.next!=null){
-                if(iter1.value==line1.getTop()){
-                    line1.pop();
-                    iter1.pre.next=iter1.next;
-                    iter1.next.pre=iter1.pre;
-                    
-                }
-            iter1=iter1.next;}
-            iter1=iter1.pre;
-            if(line1.isEmpty()){break;} 
-            answer[line1.getTop()-1]=time;
-                node temp1=new node(line1.getTop());
-                temp1.next=iter1.next;
-                iter1.next.pre=temp1;
-                iter1.next=temp1;
-                temp1.pre=iter1;
-                iter1=iter1.next;
-                line1.pop();
-            
+             while(group[line1.getFront()-1]){
+                line1.deQueue();
+                if(line1.isEmpty()){break;}
+            }
+            if(line1.isEmpty()){
+                break;
+            }
+            answer[line1.getFront()-1]=time;
+            group[line1.getFront()-1]=true;
+            line1.deQueue();
             time++;
         }
 
         while(!line2.isEmpty()){
-            iter1=headDelete.next;
-            while(iter1.next!=null){
-                if(iter1.value==line2.getTop()){
-                    line2.pop();
-                    iter1.pre.next=iter1.next;
-                    iter1.next.pre=iter1.pre;
-                    iter1=iter1.next;
-                }
-                iter1=iter1.next;}
-                iter1=iter1.pre;
+             while(group[line2.getFront()-1]){
+                line2.deQueue();
                 if(line2.isEmpty()){break;}
-                answer[line2.getTop()-1]=time;
-                node temp1=new node(line2.getTop());
-                temp1.next=iter1.next;
-                iter1.next.pre=temp1;
-                iter1.next=temp1;
-                temp1.pre=iter1;
-                iter1=iter1.next;
-                line2.pop();
-            
+            }
+            if(line2.isEmpty()){
+                break;
+            }
+            answer[line2.getFront()-1]=time;
+            group[line2.getFront()-1]=true;
+            line2.deQueue();
             time++;
         }
-        for (int i = 0; i < answer.length; i++) {
+
+        for (int i = 0; i < answer.length-1; i++) {
             out.print(answer[i]+" ");
         }
+        out.print(answer[groupnum-1]);
+        
         out.close();
         
     }
 
-
-    public static class stack{
-        node head=new node(-1);
-        node top=head;
     
 
-        public stack(){
-            
+    public static class queue{
+        private int[] S;
+        private int front=0;
+        private int rear=0;
+
+        public queue(int length){
+            this.S=new int[length+1];
         }
 
-        
-
-        public void push(int s){
-            node temp=new node(s);
-            top.next=temp;
-            temp.pre=top;
-            top=top.next;
+        public void enQueue(int s){
+            if(this.size()<S.length-1){
+            S[rear]=s;
+            rear=(rear+1)%S.length;}else{
+                System.out.println("Queue Overflow");
+            }
         }
 
-        public void pop(){
-            top=top.pre;
+        public void deQueue(){
+            if(!this.isEmpty()){
+                front=(front+1)%S.length;}else{
+                System.out.println("Queue is Empty");
+            }
         }
 
-        public int getTop(){
-            return top.value;
+        public int getFront(){
+            return S[front];
         }
 
         public boolean isEmpty(){
-            if(top.pre==null){return true;}else{return false;}
+            if(front==rear){
+                return true;
+            }else{return false;}
         }
 
-        public void delete(int s){
-            node iter=top;
-            while(iter.pre!=null){
-            while(iter.value!=s&&iter.pre!=null){
-                iter=iter.pre;
+        public int size(){
+            int temp=(rear-front+S.length)%S.length;
+            
+            return temp;
+        }
+
+        public void clear(){
+            while(rear!=front){
+                rear=(rear-1)%S.length;
             }
-            if(iter.value!=-1){
-                if(iter.equals(top)){top=top.pre;}
-                iter.pre.next=iter.next;
-                iter.next.pre=iter.pre;
-                iter=iter.pre;
-            }}
         }
+
+
     }
 
-    public static class node{
-        int value;
-        node next;
-        node pre;
-        
-        public node(int value){
-            this.value=value;
-        }
-    }
+
+    
 }
 
 class QReader {
