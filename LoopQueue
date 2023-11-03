@@ -1,0 +1,48 @@
+public static class queue{
+        private int[] S;
+        private int front=0;
+        private int rear=0;
+
+        public queue(int length){
+            this.S=new int[length+1];
+        }
+
+        public void enQueue(int s){
+            if(this.size()<S.length-1){
+            S[rear]=s;
+            rear=(rear+1)%S.length;}else{
+                System.out.println("Queue Overflow");
+            }
+        }
+
+        public void deQueue(){
+            if(!this.isEmpty()){
+                front=(front+1)%S.length;}else{
+                System.out.println("Queue is Empty");
+            }
+        }
+
+        public int getFront(){
+            return S[front];
+        }
+
+        public boolean isEmpty(){
+            if(front==rear){
+                return true;
+            }else{return false;}
+        }
+
+        public int size(){
+            int temp=(rear-front+S.length)%S.length;
+            System.out.println();
+            return temp;
+        }
+
+        public void clear(){
+            while(rear!=front){
+                rear=(rear-1)%S.length;
+            }
+        }
+
+
+    }
