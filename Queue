@@ -1,0 +1,40 @@
+public static class queue{
+        private int[] S;
+        private int front=0;
+        private int rear=0;
+
+        public queue(int length){
+            this.S=new int[length];
+        }
+
+        public void enQueue(int s){
+            S[rear]=s;
+            rear++;
+        }
+
+        public void deQueue(){
+            front++;
+        }
+
+        public int getFront(){
+            return S[front];
+        }
+
+        public boolean isEmpty(){
+            if(front==rear){
+                return true;
+            }else{return false;}
+        }
+
+        public int size(){
+            return rear-front+1;
+        }
+
+        public void clear(){
+            while(rear!=front){
+                rear--;
+            }
+        }
+
+
+    }
