@@ -22,78 +22,36 @@ public class Main {
             iter.next=tail;
             mergesort(sorted, sortedTemp, 0, length-1);
             
-            stack store=new stack(length);
-            int j=0;
+            stack store=new stack(length+1);
+            
             
             int[] answer=new int[length];
             int k=0;
             iter=head.next;
-            
+            store.push(400000);
+            int j=0;
             while(iter.next!=null){
-                if(!store.isEmpty()&&store.getTop()==sorted[j].value){
+                
+                if(store.getTop()<=sorted[j].value){
+                    while(sorted[j].isStacked){
+                        j++;
+                    }
                     answer[k]=store.getTop();
-                    sorted[store.getTop()-1].value=-1;
                     k++;
                     store.pop();
-                    while(sorted[++j].value==-1){}
-                }
-                if(iter.value==sorted[j].value){
-                    answer[k]=iter.value;
-                    iter.value=-1;
-                    iter=iter.next;
-                    k++;
-                    while(sorted[++j].value==-1){}
                 }else{
-                    if(!sorted[j].isStacked){
-                        store.push(iter.value);
-                        iter.isStacked=true;
-                        iter=iter.next;
-                    }else{
-                        
-                        
-
-                        if(iter.value>=store.getTop()){
-                           
-                            
-                            
-                            while(store.getTop()!=sorted[j].value){
-                            answer[k]=store.getTop();
-                            sorted[store.getTop()-1].value=-1;
-                            k++;
-                            sorted[store.getTop()-1].isStacked=false;
-                            store.pop();
-                            
-                            }
-                            answer[k]=store.getTop();
-                            sorted[store.getTop()-1].value=-1;
-                            k++;
-                            sorted[store.getTop()-1].isStacked=false;
-                            
-                            while(sorted[++j].value==-1){}
-                            store.pop();
-                            store.push(iter.value);
-                            iter.isStacked=true;
-                            iter=iter.next;
-                        
-                        }else{
-                               int m=iter.value-1;
-                        while(--m>=0&&(sorted[m].value==-1||sorted[m].isStacked)){}
-                        if(m!=-1){
-                            store.push(iter.value);
-                            iter.isStacked=true;
-                            iter=iter.next;
-                        }else{
-                            answer[k]=iter.value;
-                            k++;
-                            iter.value=-1;
-                            iter=iter.next;}
-                        }
+                    while(sorted[j].isStacked){
+                        j++;
                     }
-                    
+                    store.push(iter.value);
+                    iter.isStacked=true;
+                    iter=iter.next;
                 }
             }
 
-            while(!store.isEmpty()){
+                
+
+            while(store.top!=0){
                 answer[k]=store.getTop();
                 k++;
                 store.pop();
