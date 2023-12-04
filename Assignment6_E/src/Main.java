@@ -16,69 +16,69 @@ public class Main {
             city[u].children.add(city[v]);
             city[v].children.add(city[u]);
         }
-
-        queue cityList=new queue(citySize);
-        cityList.enQueue(city[1]);
+        
         int n=input.nextInt();
         int[]indix=new int[n];
-        node[] giantedCity=new node[n];
-        int j=0;
 
         for (int i = 0; i < indix.length; i++) {
             indix[i]=input.nextInt();
         }
-
-        while(!cityList.isEmpty()){
-            node temp=cityList.getFront();
-            
-            ArrayList<node> children=temp.children;
-            
-            for (int i = 0; i < children.size(); i++) {
-                node childTemp=children.get(i);
-                if(childTemp.isparent){
-                    temp.level=childTemp.level+1;
-                }else{
-                    cityList.enQueue(childTemp);
-                }
-            }
-
-            
-                if(binarySearch(indix, temp.indix)!=-1){
-                    giantedCity[j]=temp;
-                    j++;
-                }
-                
-            
+        int level=1;
+        ArrayList<node> level1=city[1].children;
+        ArrayList<Integer> answer=new ArrayList<>();
+        city[1].isparent=true;
+        for (int i = 0; i < level1.size(); i++) {
+            node temp=level1.get(i);
+            if(!temp.isparent){
             temp.isparent=true;
-            cityList.deQueue();
+            node pre=city[1];
+            distanceSearch(pre, answer, temp, level, indix);}
         }
-
-        node[] giantedCitytemp=new node[n];
-        mergesort(giantedCity, giantedCitytemp, 0, n-1);
-
-        int k=0;
-        while(k<n-1){
-            
-            int temp=0;
-            while(k<n-1&&giantedCity[k].level==giantedCity[k+1].level){
-                k++;
-                temp++;
-            }
-            giantedCity[k].level=giantedCity[k].level+temp;
-            if(k==n-1){break;}
-            if(giantedCity[k].level<giantedCity[k+1].level){
-                k++;
-            }else{
-                if(giantedCity[k].level>giantedCity[k+1].level){
-                    giantedCity[k+1].level=giantedCity[k].level;
-                }
-            }
-
-        }
-
-        out.print(giantedCity[n-1].level-1);
+        Collections.sort(answer);
+        out.println(answer.get(answer.size()-1));
         out.close();
         
+    }
+
+    public static void distanceSearch(node pre,ArrayList<Integer> answer,node temp,int level,int[]indices){
+        temp.isparent=true;
+        if(temp.children.size()==1){
+            if(!temp.isgiant){
+                answer.add(pre.level+pre.wait);
+            }else{
+                answer.add(temp.level+temp.wait);
+            }
+        }else{
+        level++;
+        int counter=0;
+        ArrayList<node> children=temp.children;
+        for (int i = 0; i < children.size(); i++) {
+            node childTemp=children.get(i);
+            if(childTemp.isparent){}else{
+            if(binarySearch(indices, childTemp.indix)!=-1){
+                childTemp.level=level;
+                childTemp.isgiant=true;
+                counter++;}
+            }
+        }
+        
+        for (int i = 0; i < children.size(); i++) {
+            node childTemp=children.get(i);
+            if(!childTemp.isparent){
+            if(childTemp.isgiant){
+                if(childTemp.level<=pre.level+pre.wait){
+                    childTemp.wait=counter-1+pre.wait-(childTemp.level-pre.level)+1;
+                }else{
+                    childTemp.wait=counter-1;
+                }
+                distanceSearch(childTemp, answer, childTemp, level, indices);
+            }else{
+                distanceSearch(pre, answer, childTemp, level, indices);
+            }}
+        }
+    }
+
+
     }
 
     public static int binarySearch(int[] nums,int target) {
@@ -175,8 +175,10 @@ public class Main {
     public static class node{
         ArrayList<node> children=new ArrayList<>();
         boolean isparent;
+        boolean isgiant;
         int level=0;
         int indix;
+        int wait=0;
     }
 }
 
