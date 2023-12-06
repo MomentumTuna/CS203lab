@@ -1,0 +1,41 @@
+public static void delete_min(ArrayList<Long> heap){
+        long temp=heap.get(heap.size()-1);
+        heap.set(1,temp);
+        heap.remove(heap.size()-1);
+        rootfix(heap,1);
+    }
+
+    public static void rootfix(ArrayList<Long> heap,int i){
+        while(2*i<heap.size()){
+            long parent=heap.get(i);
+            long lson=heap.get(2*i);
+            if(2*i+1<heap.size()){
+                long rson=heap.get(2*i+1);
+                if(rson<lson){
+                    if(parent>rson){
+                    heap.set(i, rson);
+                    heap.set(2*i+1,parent);
+                    i=2*i+1;}else{break;}
+                }else{
+                    if(parent>lson){
+                    heap.set(i,lson);
+                    heap.set(2*i,parent);
+                    i=2*i;}else{break;}
+                }
+            }else{
+                if(parent>lson){
+                    heap.set(i,lson);
+                    heap.set(2*i,parent);
+                    i=2*i;}else{break;}
+            }
+        }
+    }
+
+    public static void heap_sort(ArrayList<Long> heap){
+        for (int i = heap.size()-1; i>0; i--) {
+            int indix=i;
+            if(indix*2>heap.size()-1){continue;}else{
+                rootfix(heap,i);
+            }
+        }
+    }
