@@ -1,0 +1,114 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        Scanner input=new Scanner(System.in);
+        int n=input.nextInt();
+        int m=input.nextInt();
+        node[] nodes=new node[n+1];
+        for (int i = 1; i < n+1; i++) {
+            node temp=new node(i);
+            nodes[i]=temp;
+        }
+        for (int i = 0; i < m; i++) {
+            int f=input.nextInt();
+            int c=input.nextInt();
+            node father=nodes[f];
+            node child=nodes[c];
+            father.children.add(child);
+        }
+
+
+        
+        level_tranversal(nodes[1], n+1);
+        
+    }
+
+    public static void BFS(node root,int length){
+        queue yellow=new queue(length+1);
+        yellow.enQueue(root);
+        root.isinqueue=true;
+        while(!yellow.isEmpty()){
+            node father=yellow.getFront();
+            father.isvisit=true;
+            ArrayList<node> children=father.children;
+            for (int i = 0; i < children.size(); i++) {
+                node temp=children.get(i);
+                if(!temp.isinqueue){
+                    temp.isinqueue=true;
+                    yellow.enQueue(temp);
+                    father.BSFchildren.add(temp);
+                }
+            }
+            yellow.deQueue();
+        }
+    }
+    
+    public static void level_tranversal(node temp,int length){
+        queue level=new queue(length);
+        level.enQueue(temp);
+        while(!level.isEmpty()){
+            node t=level.getFront();
+            System.out.printf("%d ",t.indix);
+            ArrayList<node> children=t.BSFchildren;
+            for (int i = 0; i < children.size(); i++) {
+                level.enQueue(children.get(i));
+            }
+            level.deQueue();
+        }
+    }
+    
+    public static class node{
+        int indix;
+        boolean isvisit;
+        boolean isinqueue;
+        ArrayList<node> children=new ArrayList<>();
+        ArrayList<node> BSFchildren=new ArrayList<>();
+
+        public  node(int indix){
+            this.indix=indix;
+        }
+    }
+
+    public static class queue{
+        private node[] S;
+        private int front=0;
+        private int rear=0;
+
+        public queue(int length){
+            this.S=new node[length];
+        }
+
+        public void enQueue(node temp){
+            S[rear]=temp;
+            rear++;
+        }
+
+        public void deQueue(){
+            front++;
+        }
+
+        public node getFront(){
+            return S[front];
+        }
+
+        public boolean isEmpty(){
+            if(front==rear){
+                return true;
+            }else{return false;}
+        }
+
+        public int size(){
+            return rear-front+1;
+        }
+
+        public void clear(){
+            while(rear!=front){
+                rear--;
+            }
+        }
+
+
+    }
+}
