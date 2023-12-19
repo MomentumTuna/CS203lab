@@ -1,51 +1,13 @@
-module musicSelect(
-    input [2:0]sel_sig,
-    output reg[15:0]title[63:0],
-    output reg[3:0]notes_out[63:0],
-    output reg signed[2:0]octave[63:0],
-    output reg[2:0]beat[63:0],
-    output reg [15:0]speed,
-    output reg [15:0]notes[63:0]
-    );
-    //sel_sig decoder-to
-    wire [15:0]out_s1;
-    wire [15:0]out_s2;
-    wire [15:0]out_s3;
-    reg [15:0]out;
-    reg [7:0]address;
-    //reg [15:0]notes[63:0];
-    always @*
-    begin
-    case(sel_sig)
-    3'b001:out=out_s1;
-    3'b010:out=out_s2;
-    3'b100:out=out_s3;
-    endcase
-    end
-    
-    script1 s1(.a(address),.spo(out_s1));
-    reg [15:0] length_title;
-    reg[15:0] length_notes;
-    integer i,j;
-    integer titlei,notesi;
-    always @*
-    begin
-    address=8'd0;
-    
-    length_title=out;
-    address=8'd1;
-    address=8'd2;
-    speed=out;
-    
-    titlei=length_title[3:0]+length_title[7:4]*10+length_title[11:8]*100+length_title[15:12]*1000;
-    notesi=length_notes[3:0]+length_notes[7:4]*10+length_notes[11:8]*100+length_notes[15:12]*1000;
-    
-    for(i=0;i<titlei;i=i+1)begin
-    address=3+i;
-    title[i]=out;
-    end
-    for(i=0;i<notesi;i=i+1)begin
-    address=3+titlei+i;
-    notes[i]=out;
-   end
-    end
+
+octave[191:176] <= out;
+  octave[175:160] <= octave[191:176];
+  octave[159:144] <= octave[175:160];
+  octave[143:128] <= octave[159:144];
+  octave[127:112] <= octave[143:128];
+  octave[111:96]  <= octave[127:112];
+  octave[95:80]   <= octave[111:96];
+  octave[79:64]   <= octave[95:80];
+  octave[63:48]   <= octave[79:64];
+  octave[47:32]   <= octave[63:48];
+  octave[31:16]   <= octave[47:32];
+  octave[15:0]    <= octave[31:16];
