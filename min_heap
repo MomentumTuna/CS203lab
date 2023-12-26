@@ -1,0 +1,59 @@
+
+
+
+    public static class node{    
+        int value;
+        public node(int value){
+            this.value=value;
+        }
+    }
+
+
+
+        
+    public static node delete_min(ArrayList<node> ){
+        node next=heap.get(heap.size()-1);
+        node min=heap.get(1);
+        heap.set(1,next);
+        rootfix(heap,1);
+        return min;
+    }
+
+    public static void rootfix(ArrayList<node> heap,int i){
+        while(2*i<heap.size()){
+            
+            node parentN=heap.get(i);
+            node lsonN=heap.get(2*i);
+            if(2*i+1<heap.size()){
+                
+                node rsonN=heap.get(2*i+1);
+                if(rsonN.value<lsonN.value){
+                    if(parentN.value>rsonN.value){
+                    heap.set(i,rsonN);
+                    heap.set(2*i+1,parentN);
+                    i=2*i+1;}else{break;}
+                }else{
+                    if(parentN.value>lsonN.value){
+                    heap.set(i,lsonN);
+                    heap.set(2*i,parentN);
+                    i=2*i;}else{break;}
+                }
+            }else{
+                if(parentN.value>lsonN.value){
+                    heap.set(i,lsonN);
+                    heap.set(2*i,parentN);
+                    i=2*i;}else{break;}
+            }
+        }
+    }
+
+    public static void heap_sort(ArrayList<node> heap){
+        for (int i = heap.size()-1; i>0; i--) {
+            int indix=i;
+            if(indix*2>heap.size()-1){continue;}else{
+                rootfix(heap,i);
+            }
+        }
+    }
+}
+
