@@ -1,16 +1,10 @@
-
-
-
     public static class node{    
         int value;
         public node(int value){
             this.value=value;
         }
-    }
-
-
-
-        
+    ]
+   
     public static node delete_min(ArrayList<node> ){
         node next=heap.get(heap.size()-1);
         node min=heap.get(1);
